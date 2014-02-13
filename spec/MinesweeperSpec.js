@@ -1,3 +1,8 @@
+/*
+TODO: Figure out how to test the events from the model.
+Can then add tests for game status (for example).
+*/
+
 describe("Minesweeper", function() {
   var minesweeper;
 

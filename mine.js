@@ -1,4 +1,6 @@
 function Mine(x, y) {
+    "use strict";
+    
     this._x = x;
     this._y = y;
 

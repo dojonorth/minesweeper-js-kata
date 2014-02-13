@@ -13,24 +13,31 @@
 */
 
 function Minesweeper(mineCoords) {
+    "use strict";
 
     var self = $.observable(this),
         playerGrid = [],
-        mines = [];
+        mines = [],
+        gameStatus = "READY";
 
     self.clear = function(x, y) {
         var grid_index = self._grid_index_from_x_y(x, y);
-        console.log("Minesweeper::check " + x + " " + y + " -> " + grid_index);
         playerGrid[grid_index] = "cleared";
 
-        // self.trigger("status_update", "{}");
-        self.trigger("cell_update", x, y, playerGrid[grid_index].hasMine ? "mine" : "clear");
+        self.trigger("cell_update", x, y, self.cellAt(x, y));
+        if (self._isMineAt(x, y)) {
+            self._updateGameStatus("LOST");
+        }
+        else {
+            self._updateGameStatus("INPROGRESS");
+        }
     };
 
     self.flagMineAt = function(x, y) {
         var grid_index = self._grid_index_from_x_y(x, y);
         playerGrid[grid_index] = "flag";
-        self.trigger("cell_update", x, y, playerGrid[grid_index].hasMine ? "mine" : "clear");
+
+        self.trigger("cell_update", x, y, self.cellAt(x, y));
     };
 
     self.cellAt = function(x, y) {
@@ -39,7 +46,6 @@ function Minesweeper(mineCoords) {
             visibleCellInfo = {
                 isCleared: (cell === "cleared"),
                 hasFlag: (cell === "flag"),
-                hasMine: false,
                 neighbours: self._countNeighbouringMines(x, y)
             };
         return visibleCellInfo;
@@ -71,6 +77,24 @@ function Minesweeper(mineCoords) {
             }
         });
         return count;
+    };
+
+    // TODO: move game status into its own little object?
+    self._updateGameStatus = function(newStatus) {
+        if (gameStatus !== newStatus) {
+            gameStatus = newStatus;
+            self.trigger("game_status_update", newStatus);
+        }
+    };
+
+    self._isMineAt = function(x, y) {
+        var foundMine = false;
+        mines.forEach(function(mine) {
+            if (mine.x() == x && mine.y() == y) {
+                foundMine = true;
+            }
+        });
+        return foundMine;
     };
 
 
