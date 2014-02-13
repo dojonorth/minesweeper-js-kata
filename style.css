@@ -1,0 +1,32 @@
+#grid {
+    margin-left: 100px;
+    width: 250px;
+    height: 250px;
+}
+
+#grid a {
+    display: block;
+    float: left;
+    width: 46px;
+    height: 46px;
+    margin: 2px;
+    color: black;
+    text-align: center;
+    line-height: 46px;
+    font-family: sans-serif;
+    font-size: 23px;
+}
+
+.cell_unknown {
+    background-color: lightsteelblue;
+}
+
+.cell_mine {
+    color: red;
+    background-color: orangered;
+}
+
+.cell_clear {
+    color: green;
+    background-color: olive;
+}
