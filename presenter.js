@@ -5,8 +5,8 @@
     window.minesweeper = new Minesweeper('[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
 
     var modelStatusToDisplayStatus = {
-        "READY": "Ready",
-        "INPROGRESS": "In progress",
+        "READY": "Ready to play",
+        "INPROGRESS": "Game in progress",
         "LOST": "Game over: You lost :-(",
         "WON": "Game over: You won! :-)"
     };
@@ -22,7 +22,7 @@
 
     $("a").bind("contextmenu", function(e) {
         var coords = makeCoordsFromId(this.id);
-        minesweeper.flagMineAt(coords.x, coords.y);
+        minesweeper.toggleMineAt(coords.x, coords.y);
         return false;
     });
 

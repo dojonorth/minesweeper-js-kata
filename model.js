@@ -10,6 +10,9 @@
   You can also query the state:
 
   minesweeper.cellAt(x, y);  // returns {hasMine: true/false, hasBeenSeen: true/false}
+
+  NEXT: correct game status for losing and adding a way to query that status. Driven through tests.
+  NEXT: tidy the visibleStatus thing. should be {status:flag/cleared, neighbours: N} with neighbours only set if cleared
 */
 
 function Minesweeper(mineCoords) {
@@ -22,7 +25,9 @@ function Minesweeper(mineCoords) {
 
     self.clear = function(x, y) {
         var grid_index = self._grid_index_from_x_y(x, y);
-        playerGrid[grid_index] = "cleared";
+        if (playerGrid[grid_index] === "default") {
+            playerGrid[grid_index] = "cleared";
+        }
 
         self.trigger("cell_update", x, y, self.cellAt(x, y));
         if (self._isMineAt(x, y)) {
@@ -33,9 +38,14 @@ function Minesweeper(mineCoords) {
         }
     };
 
-    self.flagMineAt = function(x, y) {
+    self.toggleFlagAt = function(x, y) {
         var grid_index = self._grid_index_from_x_y(x, y);
-        playerGrid[grid_index] = "flag";
+        if (playerGrid[grid_index] === "default") {
+            playerGrid[grid_index] = "flag";
+        }
+        else if (playerGrid[grid_index] === "flag") {
+            playerGrid[grid_index] = "default";
+        }
 
         self.trigger("cell_update", x, y, self.cellAt(x, y));
     };
