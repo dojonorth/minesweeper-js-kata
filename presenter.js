@@ -2,7 +2,7 @@
 
 (function() { 'use strict';
 
-    window.minesweeper = new Minesweeper('[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
+    window.minesweeper = new Minesweeper(5, 5, '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
 
     var modelStatusToDisplayStatus = {
         "READY": "Ready to play",
@@ -56,7 +56,7 @@
 
     var update_cell = function(x, y, cellInfo) {
         var id = makeIdFromCoords(x, y),
-            neighbours = minesweeper.cellAt(x, y).neighbours,
+            neighbours = minesweeper.location(x, y).neighbours,
             new_class = "cell_unknown";
 
         if (cellInfo.hasFlag) {

@@ -15,10 +15,13 @@
   NEXT: tidy the visibleStatus thing. should be {status:flag/cleared, neighbours: N} with neighbours only set if cleared
 */
 
-function Minesweeper(mineCoords) {
+function Minesweeper(width, height, mineCoords) {
     "use strict";
 
     var self = $.observable(this),
+        _width = width,
+        _height = height,
+        _gridSize = width * height,
         playerGrid = [],
         mines = [],
         gameStatus = "READY";
@@ -34,6 +37,7 @@ function Minesweeper(mineCoords) {
             }
             else {
                 self._updateGameStatus("INPROGRESS");
+                self._checkIfWonGame();
             }
         }
     };
@@ -43,6 +47,7 @@ function Minesweeper(mineCoords) {
         if (playerGrid[grid_index] === "default") {
             playerGrid[grid_index] = "flag";
             self.trigger("cell_update", x, y, self.location(x, y));
+            self._checkIfWonGame();
         }
         else if (playerGrid[grid_index] === "flag") {
             playerGrid[grid_index] = "default";
@@ -67,7 +72,7 @@ function Minesweeper(mineCoords) {
 
     // Private functions
     self._initPlayerGrid = function() {
-        for (var i = 0; i < 25; i++) {
+        for (var i = 0; i < _gridSize; i++) {
             playerGrid.push("default");
         }
     };
@@ -79,7 +84,7 @@ function Minesweeper(mineCoords) {
     };
 
     self._grid_index_from_x_y = function(x, y) {
-        return x + 5 * y;
+        return x + _width * y;
     };
 
     self._countNeighbouringMines = function(x, y) {
@@ -108,6 +113,20 @@ function Minesweeper(mineCoords) {
             }
         });
         return foundMine;
+    };
+
+    self._checkIfWonGame = function() {
+        var numberOfClearedAndFlaggedLocations = 0;
+
+        for (var i = 0; i < _gridSize; i++) {
+            if (playerGrid[i] !== "default") {
+                numberOfClearedAndFlaggedLocations++;
+            }
+        }
+
+        if (_gridSize === numberOfClearedAndFlaggedLocations) {
+            self._updateGameStatus("WON");
+        }
     };
 
 

@@ -7,7 +7,7 @@ describe("Minesweeper", function() {
     var minesweeper;
 
     beforeEach(function() {
-        minesweeper = new Minesweeper('[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
+        minesweeper = new Minesweeper(5, 5, '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
     });
 
     describe("flag behaviour", function() {
@@ -79,6 +79,10 @@ describe("Minesweeper", function() {
     });
 
     describe("game state behaviour", function() {
+        beforeEach(function() {
+            minesweeper = new Minesweeper(2, 2, '[{"x":1,"y":1}]');
+        });
+
         it("initially reports game as being ready to play", function() {
             expect(minesweeper.gameStatus()).toBe("READY");
         });
@@ -95,8 +99,21 @@ describe("Minesweeper", function() {
             expect(minesweeper.gameStatus()).toBe("LOST");
         });
 
-        it("after clearing all locations apart from those with mines then reports game as won", function() {
-            // TODO: need a way to control the size of the minefield to make this easier to test
+        it("after clearing all locations apart from those with mines and then flagging the mine location then reports game as won", function() {
+            minesweeper.clear(0, 0);
+            minesweeper.clear(0, 1);
+            minesweeper.clear(1, 0);
+            minesweeper.toggleFlagAt(1, 1);
+
+            expect(minesweeper.gameStatus()).toBe("WON");
+        });
+
+        it("after flagging the location and then clearing all the other locations then reports game as won", function() {
+            minesweeper.toggleFlagAt(1, 1);
+            minesweeper.clear(0, 0);
+            minesweeper.clear(0, 1);
+            minesweeper.clear(1, 0);
+
             expect(minesweeper.gameStatus()).toBe("WON");
         });
     });
