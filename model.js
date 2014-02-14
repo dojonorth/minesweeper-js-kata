@@ -27,14 +27,14 @@ function Minesweeper(mineCoords) {
         var grid_index = self._grid_index_from_x_y(x, y);
         if (playerGrid[grid_index] === "default") {
             playerGrid[grid_index] = "cleared";
-        }
 
-        self.trigger("cell_update", x, y, self.cellAt(x, y));
-        if (self._isMineAt(x, y)) {
-            self._updateGameStatus("LOST");
-        }
-        else {
-            self._updateGameStatus("INPROGRESS");
+            self.trigger("cell_update", x, y, self.cellAt(x, y));
+            if (self._isMineAt(x, y)) {
+                self._updateGameStatus("LOST");
+            }
+            else {
+                self._updateGameStatus("INPROGRESS");
+            }
         }
     };
 
@@ -42,12 +42,12 @@ function Minesweeper(mineCoords) {
         var grid_index = self._grid_index_from_x_y(x, y);
         if (playerGrid[grid_index] === "default") {
             playerGrid[grid_index] = "flag";
+            self.trigger("cell_update", x, y, self.cellAt(x, y));
         }
         else if (playerGrid[grid_index] === "flag") {
             playerGrid[grid_index] = "default";
+            self.trigger("cell_update", x, y, self.cellAt(x, y));
         }
-
-        self.trigger("cell_update", x, y, self.cellAt(x, y));
     };
 
     self.cellAt = function(x, y) {

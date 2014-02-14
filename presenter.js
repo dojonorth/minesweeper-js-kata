@@ -22,7 +22,7 @@
 
     $("a").bind("contextmenu", function(e) {
         var coords = makeCoordsFromId(this.id);
-        minesweeper.toggleMineAt(coords.x, coords.y);
+        minesweeper.toggleFlagAt(coords.x, coords.y);
         return false;
     });
 
@@ -60,12 +60,13 @@
             new_class = "cell_unknown";
 
         if (cellInfo.hasFlag) {
-            new_class = "cell_mine";
+            new_class = "cell_flag";
         }
         else if (cellInfo.isCleared) {
             new_class = "cell_clear";
         }
-        $("#" + id).removeClass("cell_unknown").addClass(new_class);
+
+        $("#" + id).removeClass().addClass(new_class);
         if (neighbours > 0) {
             $("#" + id).text(neighbours);            
         }
