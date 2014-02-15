@@ -60,9 +60,11 @@ function Minesweeper(width, height, mineCoords) {
             cell = playerGrid[gridIndex],
             visibleCellInfo = {
                 isCleared: (cell === "cleared"),
-                hasFlag: (cell === "flag"),
-                neighbours: self._countNeighbouringMines(x, y)
+                hasFlag: (cell === "flag")
             };
+        if (cell === "cleared") {
+            visibleCellInfo.neighbours = self._countNeighbouringMines(x, y)
+        }
         return visibleCellInfo;
     };
 

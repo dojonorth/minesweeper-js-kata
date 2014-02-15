@@ -35,6 +35,12 @@ describe("Minesweeper", function() {
             expect(minesweeper.location(1, 0).hasFlag).toBe(false);
             expect(minesweeper.location(1, 0).isCleared).toBe(true);
         });
+
+        it("does not report the number of neighbours", function() {
+            minesweeper.toggleFlagAt(1, 0);
+
+            expect(minesweeper.location(1, 0).neighbours).not.toBeDefined();
+        });
     });
 
     describe("clear behaviour", function() {
