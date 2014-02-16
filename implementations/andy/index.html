@@ -1,0 +1,24 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>MineMaster</title>
+    <link rel="stylesheet" href="public/styles/main.css">
+</head>
+<body>
+    <h1>Mine Master</h1>
+    <div id="grid">
+
+
+    </div>
+    <script src="public/app/lib/jquery.min.js"></script>
+    <script src="public/app/models.js"></script>
+    <script src="public/app/views.js"></script>
+    <script src="public/app/controllers.js"></script>
+    <script>
+        var MineModel = new Game(12, 8, new BoardState(12, 8, 10));
+        var MineView = new MineMasterView(this._model);
+        var MineController = new MineMasterController(MineModel, MineView);
+        MineController.initialise(12, 8);
+    </script>
+</body>
+</html>
