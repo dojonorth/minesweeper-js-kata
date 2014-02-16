@@ -3,7 +3,7 @@ function Position (x, y) {
     this.x = x;
     this.y = y;
     this.uncovered = false;
-	this.activeMine = false;
+    this.activeMine = false;
     this.adjacentPositions = [];
 }
 
