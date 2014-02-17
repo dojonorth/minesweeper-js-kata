@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Steven's Minesweeper Implementation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-3.1.1-dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="lib/Flaticon_WebFont/flaticon.css">
+
+    <script type="text/javascript" src="lib/jquery-2.1.0.min.js"></script>
+
+    <script type="text/javascript" src="src/GameEvents.js"></script>
+    <script type="text/javascript" src="src/MineSweeper.js"></script>
+    <script type="text/javascript" src="src/Position.js"></script>
+
+    <style>
+        form#game-settings {
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin: 15px 0 0 0;
+            padding: 15px;
+        }
+
+        form#game-settings input {
+            margin-right: 10px;
+        }
+
+        div#game-board {
+            padding: 15px;
+            background-color: #ccc;
+            border-radius: 0 0 4px 4px;
+        }
+
+        div#game-board .position {
+            width: 50px;
+            height: 50px;
+            margin: 0 1px 1px 0;
+            border: 1px solid #fff;
+            float: left;
+            color: #fff;
+            font-size: 30px;
+            text-align: center;
+        }
+
+        div#game-board .position.uncovered {
+            background-color: #aaa;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var board = $('#game-board');
+
+            // disable the browser's usual right click context menu from appearing on the game board
+            board.bind("contextmenu",function(e){
+                 e.preventDefault();
+            });
+
+            // Listen to form submissions to start a new game
+            $('#game-settings').submit(function (event) {
+                event.preventDefault();
+
+                var width = $('#widthInput').val();
+                var height = $('#heightInput').val();
+                var mines = $('#minesInput').val();
+
+                var game = new MineSweeper(width, height, mines);
+
+                // create user interface game board in DOM
+                for (var yCoord = 0; yCoord < height; yCoord++) {
+                    var row = $('<div/>', { 'css': { 'clear': 'left' }});
+                    row.appendTo(board);
+                    for (var xCoord = 0; xCoord < width; xCoord++) {
+                        $('<div/>', {
+                            'class': 'position',
+                            'data': {
+                                'coordinates': { 'x': xCoord, 'y': yCoord }
+                            },
+                            'on': {
+                                'click': function (event) {
+                                    // uncover a square
+                                    var square = $(this);
+                                    var coords = square.data('coordinates');
+                                    square.addClass('uncovered');
+                                    game.uncoverPosition(coords.x, coords.y);
+
+                                    // add event so when mine is found, we can end the game
+                                    GameEventManager.addListener('mine-found', function () {
+                                        // do some game over stuff...
+                                        $(this).addClass('flaticon-mine');
+                                    });
+                                },
+                                'contextmenu': function (event) {
+                                    // flag a square
+                                    //game.flagPosition(coords.x, coords.y);
+                                    $(this).toggleClass('flaticon-flag');
+                                }
+                            }
+                        }).appendTo(row);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <form id="game-settings" class="form-inline" role="form" class="game-edge">
+            <div class="form-group">
+                <label for="widthInput">Width</label>
+                <input type="text" name="width" id="widthInput" value="8" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="heightInput">Height</label>
+                <input type="text" name="height" id="heightInput" value="10" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="minesInput">Mines</label>
+                <input type="text" name="mines" id="minesInput" value="10" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-default">Start Game</button>
+        </form>
+
+        <div id="game-board">
+            
+        </div>
+    </div>
+
+</body>
+</html>
