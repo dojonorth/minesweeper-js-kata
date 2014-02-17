@@ -8,7 +8,7 @@ describe("Minesweeper", function() {
     var minefield;
 
     beforeEach(function() {
-        minefield = new Minefield().setSize(5, 5).setMineList([{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]).build();
+        minefield = new MinefieldList(5, 5, [{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]);
         minesweeper = new Minesweeper(minefield);
     });
 
@@ -88,7 +88,7 @@ describe("Minesweeper", function() {
 
     describe("game state behaviour", function() {
         beforeEach(function() {
-            minefield = new Minefield().setSize(2, 2).setMineList([{"x":1,"y":1}]).build();
+            minefield = new MinefieldList(2, 2, [{"x":1,"y":1}]);
             minesweeper = new Minesweeper(minefield);
         });
 

@@ -1,3 +1,4 @@
+// TODO: this is deprecated. Can remove once raided it for bits and pieces.
 function Minefield() {
     "use strict";
 
