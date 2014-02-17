@@ -85,7 +85,7 @@ function Minefield() {
                 return {x: x, y: y};
             }
         }
-    }
+    };
 
     this._isMineAt = function(x, y) {
         var foundMine = false;
@@ -95,5 +95,5 @@ function Minefield() {
             }
         });
         return foundMine;
-    }
+    };
 }

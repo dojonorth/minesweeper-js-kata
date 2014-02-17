@@ -5,9 +5,11 @@ Can then add tests for game status (for example).
 
 describe("Minesweeper", function() {
     var minesweeper;
+    var minefield;
 
     beforeEach(function() {
-        minesweeper = new Minesweeper(5, 5, '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
+        minefield = new Minefield().setSize(5, 5).setMineList([{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]).build();
+        minesweeper = new Minesweeper(minefield);
     });
 
     describe("flag behaviour", function() {
@@ -86,7 +88,8 @@ describe("Minesweeper", function() {
 
     describe("game state behaviour", function() {
         beforeEach(function() {
-            minesweeper = new Minesweeper(2, 2, '[{"x":1,"y":1}]');
+            minefield = new Minefield().setSize(2, 2).setMineList([{"x":1,"y":1}]).build();
+            minesweeper = new Minesweeper(minefield);
         });
 
         it("initially reports game as being ready to play", function() {

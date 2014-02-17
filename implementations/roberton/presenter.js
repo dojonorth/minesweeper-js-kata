@@ -2,7 +2,8 @@
 
 (function() { 'use strict';
 
-    window.minesweeper = new Minesweeper(5, 5, '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
+    window.minefield = new Minefield().setSize(5, 5).setMineList([{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]).build();
+    window.minesweeper = new Minesweeper(minefield);
 
     var modelStatusToDisplayStatus = {
         "READY": "Ready to play",

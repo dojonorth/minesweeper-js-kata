@@ -15,15 +15,13 @@
   NEXT: tidy the visibleStatus thing. should be {status:flag/cleared, neighbours: N} with neighbours only set if cleared
 */
 
-function Minesweeper(width, height, mineCoords) {
+function Minesweeper(minefield) {
     "use strict";
 
     var self = $.observable(this),
-        _width = width,
-        _height = height,
-        _gridSize = width * height,
+        _minefield = minefield,
+        _gridSize = _minefield.size().width * _minefield.size().height,
         playerGrid = [],
-        mines = [],
         gameStatus = "READY";
 
     self.clear = function(x, y) {
@@ -79,19 +77,13 @@ function Minesweeper(width, height, mineCoords) {
         }
     };
 
-    self._initMines = function(minesAsJson) {
-        JSON.parse(minesAsJson).forEach(function(coord) {
-            mines.push(new Mine(coord.x, coord.y));
-        });
-    };
-
     self._grid_index_from_x_y = function(x, y) {
-        return x + _width * y;
+        return x + _minefield.size().width * y;
     };
 
     self._countNeighbouringMines = function(x, y) {
         var count = 0;
-        mines.forEach(function(mine) {
+        _minefield.mines().forEach(function(mine) {
             if (mine.isNeighbour(x, y)) {
                 count++;
             }
@@ -109,7 +101,7 @@ function Minesweeper(width, height, mineCoords) {
 
     self._isMineAt = function(x, y) {
         var foundMine = false;
-        mines.forEach(function(mine) {
+        _minefield.mines().forEach(function(mine) {
             if (mine.x() == x && mine.y() == y) {
                 foundMine = true;
             }
@@ -134,5 +126,4 @@ function Minesweeper(width, height, mineCoords) {
 
     // Initialisation
     self._initPlayerGrid();
-    self._initMines(mineCoords);
 }
