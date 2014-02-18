@@ -8,6 +8,10 @@ describe('The MineSweeper game event manager', function () {
 		pending();
 	});
 
+	it('sends the event object as the first param of the callback', function () {
+		pending();
+	});
+
 	it('throws an error when calling triggerEvent with an invalid event object', function () {
 		expect(function () {
 			GameEventManager.triggerEvent('not an event object');

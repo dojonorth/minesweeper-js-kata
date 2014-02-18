@@ -6,8 +6,9 @@
  *   
  */
 
-function GameEvent(type) {
+function GameEvent(type, position) {
     this.type = type;
+    this.position = position;
 }
 
 // Create a singleton game event manager.

@@ -32,6 +32,7 @@
             padding: 15px;
             background-color: #ccc;
             border-radius: 0 0 4px 4px;
+            margin-bottom: 15px;
         }
 
         div#game-board .position {
@@ -55,13 +56,17 @@
             var board = $('#game-board');
 
             // disable the browser's usual right click context menu from appearing on the game board
-            board.bind("contextmenu",function(e){
-                 e.preventDefault();
+            board.bind("contextmenu", function (event) {
+                 event.preventDefault();
             });
 
+            var form = $('#game-settings');
+
             // Listen to form submissions to start a new game
-            $('#game-settings').submit(function (event) {
+            form.submit(function (event) {
                 event.preventDefault();
+
+                board.empty();
 
                 var width = $('#widthInput').val();
                 var height = $('#heightInput').val();
@@ -69,12 +74,31 @@
 
                 var game = new MineSweeper(width, height, mines);
 
+                function getSquare(x, y) {
+                    return $('#position_' + x + '_' + y);
+                }
+
+                GameEventManager.addListener('mine-detonated', function (event) {
+                    var square = getSquare(event.position.x, event.position.y);
+                    square.addClass('flaticon-mine');
+                });
+
+                GameEventManager.addListener('position-uncovered', function (event) {
+                    var square = getSquare(event.position.x, event.position.y);
+                    square.addClass('uncovered');
+                    
+                    if (!event.position.hasActiveMine() && event.position.hasAdjacentMine()) {
+                        square.text(event.position.getAdjacentMineCount());
+                    }
+                });
+
                 // create user interface game board in DOM
                 for (var yCoord = 0; yCoord < height; yCoord++) {
-                    var row = $('<div/>', { 'css': { 'clear': 'left' }});
+                    var row = $('<div/>', { 'class': 'clearfix', 'css': { 'clear': 'left' }});
                     row.appendTo(board);
                     for (var xCoord = 0; xCoord < width; xCoord++) {
                         $('<div/>', {
+                            'id': 'position_' + xCoord + '_' + yCoord,
                             'class': 'position',
                             'data': {
                                 'coordinates': { 'x': xCoord, 'y': yCoord }
@@ -82,16 +106,8 @@
                             'on': {
                                 'click': function (event) {
                                     // uncover a square
-                                    var square = $(this);
-                                    var coords = square.data('coordinates');
-                                    square.addClass('uncovered');
+                                    var coords = $(this).data('coordinates');
                                     game.uncoverPosition(coords.x, coords.y);
-
-                                    // add event so when mine is found, we can end the game
-                                    GameEventManager.addListener('mine-found', function () {
-                                        // do some game over stuff...
-                                        $(this).addClass('flaticon-mine');
-                                    });
                                 },
                                 'contextmenu': function (event) {
                                     // flag a square
@@ -103,6 +119,8 @@
                     }
                 }
             });
+
+            form.submit();
         });
     </script>
 </head>

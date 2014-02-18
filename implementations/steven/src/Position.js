@@ -41,11 +41,11 @@ Position.prototype.uncover = function() {
         
         console.log('Uncovering position: ' + this.x + ',' + this.y);
         
-        GameEventManager.triggerEvent(new GameEvent('position-uncovered'));
+        GameEventManager.triggerEvent(new GameEvent('position-uncovered', this));
 
         if (this.activeMine) {
             console.log('Mine detonated at position: ' + this.x + ',' + this.y);
-            GameEventManager.triggerEvent(new GameEvent('mine-detonated'));
+            GameEventManager.triggerEvent(new GameEvent('mine-detonated', this));
         } else if (!this.hasAdjacentMine()) {
             // Loop through and uncover all of the adjacent positions that have not yet been uncovered.
             this.adjacentPositions.forEach(function (adjacentPosition) {

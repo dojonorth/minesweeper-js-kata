@@ -11,13 +11,22 @@ function MineSweeper(width, height, mineCount) {
     // initialise the game board
     this.createPositions();
 
-    // now lay some mines... we could refactor this so the mines
-    // are only placed after the user first uncovers a position.
-    this.layMines();
+    // now lay some mines...
+    this.layMines(); 
 
     // and finally, link each position to its direct neighbours
     this.linkAdjacentPositions();
 }
+
+// Given a pair of coordinates, reveal a Position.
+// A mine at this position will signify game over!
+MineSweeper.prototype.uncoverPosition = function(x, y) {
+    // this could use recursion to reveal connected positions,
+    // but as we've already done the work of linking adjacent
+    // positions, we can let each position reveal itself, 
+    // then attempt to reveal its neighbours.
+    this.positions[x][y].uncover();
+};
 
 // Create the positions and track their coords in a map
 // so they can be referenced later.
@@ -35,7 +44,19 @@ MineSweeper.prototype.createPositions = function() {
 
 // Lay some mines by randomly selecting positions to activate. 
 MineSweeper.prototype.layMines = function() {
-    
+    for (var i = 0; i < this.mineCount; i++) {
+        var position;
+
+        var findRandomPosition = function() {
+            var randomX = Math.floor(Math.random() * this.width);
+            var randomY = Math.floor(Math.random() * this.height);
+            position = this.positions[randomX][randomY];
+            if (position.hasActiveMine()) findRandomPosition();
+        }.bind(this);
+
+        findRandomPosition();
+        position.activateMine();
+    }
 };
 
 // The following could be optimised in so many ways... in particular,
@@ -63,14 +84,4 @@ MineSweeper.prototype.linkAdjacentPositions = function() {
             }
         }.bind(this));
     }.bind(this));
-};
-
-// Given a pair of coordinates, reveal a Position.
-// A mine at this position will signify game over!
-MineSweeper.prototype.uncoverPosition = function(x, y) {
-    // this could use recursion to reveal connected positions,
-    // but as we've already done the work of linking adjacent
-    // positions, we can be more OO and let each position
-    // reveal itself, then attempt to reveal it's neighbours.
-    this.positions[x][y].uncover();
 };
