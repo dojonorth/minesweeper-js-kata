@@ -36,7 +36,10 @@
     });
 
     minesweeper.on("cell_update", function(x, y, cellInfo) {
-        update_cell(x, y, cellInfo);
+        console.log(cellInfo);
+        cellInfo.forEach(function(newInfoForCell) {
+            update_cell(x, y, newInfoForCell);
+        });
     });
 
 

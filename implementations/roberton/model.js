@@ -24,13 +24,17 @@ function Minesweeper(minefield) {
         playerGrid = [],
         gameStatus = "READY";
 
+
+    // Private functions
+    /////////////////////////////////////////////////////////
+
     self.clear = function(x, y) {
         var grid_index = self._grid_index_from_x_y(x, y);
         if (playerGrid[grid_index] === "default") {
             playerGrid[grid_index] = "cleared";
 
-            self.trigger("cell_update", x, y, self.location(x, y));
-            if (self._isMineAt(x, y)) {
+            self.trigger("cell_update", x, y, [self.location(x, y)]);
+            if (_minefield.isMineAt(x, y)) {
                 self._updateGameStatus("LOST");
             }
             else {
@@ -44,12 +48,12 @@ function Minesweeper(minefield) {
         var grid_index = self._grid_index_from_x_y(x, y);
         if (playerGrid[grid_index] === "default") {
             playerGrid[grid_index] = "flag";
-            self.trigger("cell_update", x, y, self.location(x, y));
+            self.trigger("cell_update", x, y, [self.location(x, y)]);
             self._checkIfWonGame();
         }
         else if (playerGrid[grid_index] === "flag") {
             playerGrid[grid_index] = "default";
-            self.trigger("cell_update", x, y, self.location(x, y));
+            self.trigger("cell_update", x, y, [self.location(x, y)]);
         }
     };
 
@@ -70,7 +74,10 @@ function Minesweeper(minefield) {
         return gameStatus;
     };
 
+
     // Private functions
+    /////////////////////////////////////////////////////////
+
     self._initPlayerGrid = function() {
         for (var i = 0; i < _gridSize; i++) {
             playerGrid.push("default");
@@ -91,7 +98,6 @@ function Minesweeper(minefield) {
         return count;
     };
 
-    // TODO: move game status into its own little object?
     self._updateGameStatus = function(newStatus) {
         if (gameStatus !== newStatus) {
             gameStatus = newStatus;
@@ -99,31 +105,20 @@ function Minesweeper(minefield) {
         }
     };
 
-    self._isMineAt = function(x, y) {
-        var foundMine = false;
-        _minefield.mines().forEach(function(mine) {
-            if (mine.x() == x && mine.y() == y) {
-                foundMine = true;
-            }
-        });
-        return foundMine;
-    };
-
     self._checkIfWonGame = function() {
         var numberOfClearedAndFlaggedLocations = 0;
-
         for (var i = 0; i < _gridSize; i++) {
             if (playerGrid[i] !== "default") {
                 numberOfClearedAndFlaggedLocations++;
             }
         }
-
         if (_gridSize === numberOfClearedAndFlaggedLocations) {
             self._updateGameStatus("WON");
         }
     };
 
+    // Initialise
+    /////////////////////////////////////////////////////////
 
-    // Initialisation
     self._initPlayerGrid();
 }
