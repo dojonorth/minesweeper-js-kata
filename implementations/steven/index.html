@@ -16,6 +16,10 @@
     <script type="text/javascript" src="src/Position.js"></script>
 
     <style>
+        html, body, .container {
+            height: 100%;
+        }
+
         form#game-settings {
             border: 1px solid #ccc;
             border-bottom: none;
@@ -32,7 +36,6 @@
             padding: 15px;
             background-color: #ccc;
             border-radius: 0 0 4px 4px;
-            margin-bottom: 15px;
         }
 
         div#game-board .position {
@@ -78,18 +81,24 @@
                     return $('#position_' + x + '_' + y);
                 }
 
+                GameEventManager.addListener('position-uncovered', function (event) {
+                    var position = event.target;
+                    var square = getSquare(position.x, position.y);
+                    square.addClass('uncovered');
+                    
+                    if (!position.hasActiveMine() && position.hasAdjacentMine()) {
+                        square.text(position.getAdjacentMineCount());
+                    }
+                });
+
                 GameEventManager.addListener('mine-detonated', function (event) {
-                    var square = getSquare(event.position.x, event.position.y);
+                    var square = getSquare(event.target.x, event.target.y);
                     square.addClass('flaticon-mine');
                 });
 
-                GameEventManager.addListener('position-uncovered', function (event) {
-                    var square = getSquare(event.position.x, event.position.y);
-                    square.addClass('uncovered');
-                    
-                    if (!event.position.hasActiveMine() && event.position.hasAdjacentMine()) {
-                        square.text(event.position.getAdjacentMineCount());
-                    }
+                GameEventManager.addListener('game-over', function (event) {
+                    // remove event handlers from the squares
+                    $('.position').off();
                 });
 
                 // create user interface game board in DOM

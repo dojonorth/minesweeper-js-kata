@@ -1,7 +1,7 @@
-// Note, when initialising the game, this code
-// makes multiple passes, but it could be optimised
-// by using recursion to create the first position
-// and then create each adjacent position, and so on...
+/* Note, when initialising the game, this code
+   makes multiple passes, but it could be optimised
+   by using recursion to create the first position
+   and then create each adjacent position, and so on... */
 function MineSweeper(width, height, mineCount) {
     this.width = width;
     this.height = height;
@@ -16,10 +16,19 @@ function MineSweeper(width, height, mineCount) {
 
     // and finally, link each position to its direct neighbours
     this.linkAdjacentPositions();
+
+    GameEventManager.addListener('mine-detonated', this.gameOver);
 }
 
-// Given a pair of coordinates, reveal a Position.
-// A mine at this position will signify game over!
+/* Trigger the game over event then clear all event listeners. */
+MineSweeper.prototype.gameOver = function(event) {
+    console.log('Mine detonated! Game over... :(')
+    GameEventManager.triggerEvent(new GameEvent('game-over'));
+    GameEventManager.clearListeners();
+};
+
+/* Given a pair of coordinates, reveal a Position.
+   A mine at this position will signify game over! */
 MineSweeper.prototype.uncoverPosition = function(x, y) {
     // this could use recursion to reveal connected positions,
     // but as we've already done the work of linking adjacent
@@ -28,8 +37,8 @@ MineSweeper.prototype.uncoverPosition = function(x, y) {
     this.positions[x][y].uncover();
 };
 
-// Create the positions and track their coords in a map
-// so they can be referenced later.
+/* Create the positions and track their coords in a map
+   so they can be referenced later. */
 MineSweeper.prototype.createPositions = function() {
     for (var x = 0; x < this.width; x++) {
         if (this.positions[x] === undefined) {
@@ -42,7 +51,7 @@ MineSweeper.prototype.createPositions = function() {
     }
 };
 
-// Lay some mines by randomly selecting positions to activate. 
+/* Lay some mines by randomly selecting positions to activate. */
 MineSweeper.prototype.layMines = function() {
     for (var i = 0; i < this.mineCount; i++) {
         var position;
@@ -59,12 +68,12 @@ MineSweeper.prototype.layMines = function() {
     }
 };
 
-// The following could be optimised in so many ways... in particular,
-// around the way we link. We could link both ways at once, and save 
-// doing it later. This method links adjacent positions to one another
-// so that when revealing a position, we can recursively cycle through
-// all adjacent positions and so on (until we hit spaces that are 
-// adjacent to a mined position).
+/* The following could be optimised in so many ways... in particular,
+   around the way we link. We could link both ways at once, and save 
+   doing it later. This method links adjacent positions to one another
+   so that when revealing a position, we can recursively cycle through
+   all adjacent positions and so on (until we hit spaces that are 
+   adjacent to a mined position). */
 MineSweeper.prototype.linkAdjacentPositions = function() {
     this.positions.forEach(function (line) {
         line.forEach(function (position) {

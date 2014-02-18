@@ -4,6 +4,10 @@ describe('The MineSweeper game event manager', function () {
 		pending();
 	});
 
+	it('provides the ability to clear all registered event listeners', function () {
+		pending();
+	});
+
 	it('executes callbacks associated with an event type when the event is triggered', function () {
 		pending();
 	});

@@ -6,15 +6,19 @@
  *   
  */
 
-function GameEvent(type, position) {
+function GameEvent(type, target) {
     this.type = type;
-    this.position = position;
+    this.target = target;
 }
 
 // Create a singleton game event manager.
 var GameEventManager = {
 
     callbacks: {},
+
+    clearListeners: function () {
+        GameEventManager.callbacks = {};
+    },
 
     addListener: function (type, callback) {
         console.log('Adding event type: ' + type);

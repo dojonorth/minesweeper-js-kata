@@ -86,6 +86,16 @@ describe('The MineSweeper game engine', function () {
             game.positions[0][0].uncover();
             expect(actual).toEqual(width * height);
         });
+
+        describe('that has an activated mine', function () {
+            it('triggers a game over event', function () {
+                pending();
+            });
+
+            it('clears all registered event listeners', function () {
+                pending();
+            });
+        });
     });
 
 });
