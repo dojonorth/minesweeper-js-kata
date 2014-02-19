@@ -101,6 +101,11 @@
                     $('.position').off();
                 });
 
+                GameEventManager.addListener('game-completed', function (event) {
+                    // remove event handlers from the squares
+                    $('.position').off();
+                });
+
                 // create user interface game board in DOM
                 for (var yCoord = 0; yCoord < height; yCoord++) {
                     var row = $('<div/>', { 'class': 'clearfix', 'css': { 'clear': 'left' }});
@@ -120,8 +125,16 @@
                                 },
                                 'contextmenu': function (event) {
                                     // flag a square
-                                    //game.flagPosition(coords.x, coords.y);
-                                    $(this).toggleClass('flaticon-flag');
+                                    var square = $(this);
+                                    var coords = square.data('coordinates');
+                                    
+                                    if (square.hasClass('flaticon-flag')) {
+                                        game.unflagPosition(coords.x, coords.y);
+                                    } else {
+                                        game.flagPosition(coords.x, coords.y);
+                                    }
+
+                                    square.toggleClass('flaticon-flag')
                                 }
                             }
                         }).appendTo(row);

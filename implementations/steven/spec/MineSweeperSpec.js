@@ -10,6 +10,7 @@ describe('The MineSweeper game engine', function () {
     });
 
     describe('when creating positions', function () {
+
         it('will use the given dimensions to generate the correct number', function () {
             var actual = 0;
 
@@ -57,15 +58,17 @@ describe('The MineSweeper game engine', function () {
             });
 
             expect(actual).toEqual(mines);
-            pending();
         });
 
         it('places the mines at random positions', function () {
+            // this would be a nondeterministic test :/
             pending();
         });
+
     });
 
     describe('when uncovering a position', function () {
+
         it('uncover only the selected position if adjacent to a position containing a mine', function () {
             pending();
         });
@@ -88,6 +91,7 @@ describe('The MineSweeper game engine', function () {
         });
 
         describe('that has an activated mine', function () {
+
             it('triggers a game over event', function () {
                 pending();
             });
@@ -96,6 +100,27 @@ describe('The MineSweeper game engine', function () {
                 pending();
             });
         });
+
+    });
+
+    describe('when marking the location of a mine', function () {
+
+        it('allows the placement of a flag on any given position', function () {
+            pending();
+        });
+
+        it('allows no more flags to be placed than the number of mines in the game', function () {
+            pending();
+        });
+
+        it('allows for the removal of a flag from a position where one has been placed', function () {
+            pending();
+        });
+
+        it('considers the game completed when a flag has been placed on every position containing a mine', function () {
+            pending();
+        });
+
     });
 
 });

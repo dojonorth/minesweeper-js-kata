@@ -1,11 +1,9 @@
 
-/**
- * Known event types and args that clients can attach listeners to:
- *   position-uncovered
- *   mine-detonated
- *   
- */
-
+/* Known event types that clients can attach listeners to:
+     position-uncovered
+     mine-detonated
+     game-over
+     game-completed    */
 function GameEvent(type, target) {
     this.type = type;
     this.target = target;

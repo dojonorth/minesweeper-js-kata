@@ -4,8 +4,21 @@ function Position (x, y) {
     this.y = y;
     this.uncovered = false;
     this.activeMine = false;
+    this.flagged = false;
     this.adjacentPositions = [];
 }
+
+Position.prototype.isFlagged = function() {
+    return this.flagged;
+};
+
+Position.prototype.flag = function() {
+    this.flagged = true;
+};
+
+Position.prototype.unflag = function() {
+    this.flagged = false;
+};
 
 Position.prototype.hasActiveMine = function() {
     return this.activeMine;

@@ -1,12 +1,10 @@
-/* Note, when initialising the game, this code
-   makes multiple passes, but it could be optimised
-   by using recursion to create the first position
-   and then create each adjacent position, and so on... */
+
 function MineSweeper(width, height, mineCount) {
     this.width = width;
     this.height = height;
-    this.mineCount = mineCount;
+    this.mineCount = parseInt(mineCount, 10);
     this.positions = [];
+    this.flags = this.mineCount;
 
     // initialise the game board
     this.createPositions();
@@ -21,19 +19,53 @@ function MineSweeper(width, height, mineCount) {
 }
 
 /* Trigger the game over event then clear all event listeners. */
-MineSweeper.prototype.gameOver = function(event) {
-    console.log('Mine detonated! Game over... :(')
+MineSweeper.prototype.gameOver = function() {
+    console.log('Game over!')
     GameEventManager.triggerEvent(new GameEvent('game-over'));
     GameEventManager.clearListeners();
 };
 
-/* Given a pair of coordinates, reveal a Position.
-   A mine at this position will signify game over! */
+/* Trigger the game completed event then clear all event listeners. */
+MineSweeper.prototype.gameComplete = function() {
+    console.log('Game completed!')
+    GameEventManager.triggerEvent(new GameEvent('game-completed'));
+    GameEventManager.clearListeners();
+};
+
+/* Flag the position for the given set of coordinates. If all flags
+   are used, check if the game has been completed. */
+MineSweeper.prototype.flagPosition = function(x, y) {
+    if (this.flags > 0) {
+        this.positions[x][y].flag();
+        if (--this.flags === 0) {
+            var count = 0;
+            for (var xCoord = 0; xCoord < this.width; xCoord++) {
+                for (var yCoord = 0; yCoord < this.height; yCoord++) {
+                    if (this.positions[xCoord][yCoord].isFlagged() &&
+                        this.positions[xCoord][yCoord].hasActiveMine()) 
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            if (count === this.mineCount) {
+                this.gameComplete();
+            }
+        }
+    }
+};
+
+/* Remove the flag on the position for the given set of coordinates. */
+MineSweeper.prototype.unflagPosition = function(x, y) {
+    if (this.positions[x][y].isFlagged()) {
+        this.positions[x][y].unflag();
+        this.flags++;
+    }
+};
+
+/* Reveal the position for the given set of coordinates. */
 MineSweeper.prototype.uncoverPosition = function(x, y) {
-    // this could use recursion to reveal connected positions,
-    // but as we've already done the work of linking adjacent
-    // positions, we can let each position reveal itself, 
-    // then attempt to reveal its neighbours.
     this.positions[x][y].uncover();
 };
 
