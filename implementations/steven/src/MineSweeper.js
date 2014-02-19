@@ -70,7 +70,9 @@ MineSweeper.prototype.unflagPosition = function(x, y) {
 
 /* Reveal the position for the given set of coordinates. */
 MineSweeper.prototype.uncoverPosition = function(x, y) {
-    this.positions[x][y].uncover();
+    if (!this.positions[x][y].isFlagged()) {
+        this.positions[x][y].uncover();
+    }
 };
 
 /* Create the positions and track their coords in a map

@@ -52,6 +52,10 @@
         div#game-board .position.uncovered {
             background-color: #aaa;
         }
+
+        div#game-board .position.uncovered.flaticon-mine {
+            background-color: #a00;
+        }
     </style>
 
     <script type="text/javascript">
@@ -119,9 +123,13 @@
                             },
                             'on': {
                                 'click': function (event) {
-                                    // uncover a square
-                                    var coords = $(this).data('coordinates');
-                                    game.uncoverPosition(coords.x, coords.y);
+                                    // uncover a square (if it has not been flagged)
+                                    var square = $(this);
+                                    var coords = square.data('coordinates');
+
+                                    if (!square.hasClass('flaticon-flag')) {
+                                        game.uncoverPosition(coords.x, coords.y);
+                                    }
                                 },
                                 'contextmenu': function (event) {
                                     // flag a square

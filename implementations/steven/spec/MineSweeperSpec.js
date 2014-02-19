@@ -121,6 +121,10 @@ describe('The MineSweeper game engine', function () {
             pending();
         });
 
+        it('a flagged position cannot be uncovered while the flag is present', function () {
+            pending();
+        });
+
     });
 
 });
