@@ -32,6 +32,10 @@ MineSweeper.prototype.gameComplete = function() {
     GameEventManager.clearListeners();
 };
 
+MineSweeper.prototype.hasAvailableFlags = function() {
+    return this.flags > 0;
+};
+
 /* Flag the position for the given set of coordinates. If all flags
    are used, check if the game has been completed. */
 MineSweeper.prototype.flagPosition = function(x, y) {

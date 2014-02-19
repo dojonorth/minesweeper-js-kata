@@ -130,11 +130,11 @@
                                     
                                     if (square.hasClass('flaticon-flag')) {
                                         game.unflagPosition(coords.x, coords.y);
-                                    } else {
+                                        square.removeClass('flaticon-flag')
+                                    } else if (game.hasAvailableFlags()) {
                                         game.flagPosition(coords.x, coords.y);
+                                        square.addClass('flaticon-flag')
                                     }
-
-                                    square.toggleClass('flaticon-flag')
                                 }
                             }
                         }).appendTo(row);
