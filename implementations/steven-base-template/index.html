@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Minesweeper Dojo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-3.1.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/Flaticon_WebFont/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <script type="text/javascript" src="lib/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="game-ui.js"></script>
+</head>
+
+<body>
+    <div class="container" id="main-frame">
+        <form id="game-settings" class="form-inline" role="form" class="game-edge">
+            <div class="form-group">
+                <label for="widthInput">Width</label>
+                <input type="text" name="width" id="widthInput" value="8" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="heightInput">Height</label>
+                <input type="text" name="height" id="heightInput" value="10" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="minesInput">Mines</label>
+                <input type="text" name="mines" id="minesInput" value="10" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-default">Start Game</button>
+        </form>
+
+        <div id="game-board">
+            
+        </div>
+    </div>
+</body>
+</html>
