@@ -12,13 +12,15 @@
 
         <script>
         /* Little bit of script to build the grid of mines */
-        var grid = document.getElementById("grid");
-        for (row = 0; row < 5; row++) {
-            for (col = 0; col < 5; col++) {
-                var new_cell = document.createElement("a");
-                new_cell.id = row + "_" + col;
-                new_cell.className = "cell_unknown";
-                grid.appendChild(new_cell);
+        var createMinefield = function(width, height) {
+            var grid = document.getElementById("grid");
+            for (row = 0; row < height; row++) {
+                for (col = 0; col < width; col++) {
+                    var new_cell = document.createElement("a");
+                    new_cell.id = row + "_" + col;
+                    new_cell.className = "cell_unknown";
+                    grid.appendChild(new_cell);
+                }
             }
         }
         </script>

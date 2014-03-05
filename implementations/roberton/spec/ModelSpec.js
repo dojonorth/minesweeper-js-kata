@@ -11,6 +11,7 @@ describe("Model", function() {
         return {
             isCleared: true,
             hasFlag: false,
+            hasMine: false,
             neighbours: numOfNeighbours
         };
     };
