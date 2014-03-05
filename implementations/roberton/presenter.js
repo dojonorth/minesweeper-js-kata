@@ -2,8 +2,11 @@
 
 (function() { 'use strict';
 
-    window.minefield = new MinefieldList(5, 5, [{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]);
-    window.minesweeper = new Minesweeper(minefield);
+//    window.minefield = new MinefieldList(5, 5, [{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]);
+    var WIDTH = 5;
+    var HEIGHT = 5;
+    window.minefield = new MinefieldRandom(WIDTH, HEIGHT, Math.floor(WIDTH * HEIGHT / 8));
+    window.minesweeper = new Model(minefield);
 
     var modelStatusToDisplayStatus = {
         "READY": "Ready to play",
@@ -67,7 +70,13 @@
             new_class = "cell_flag";
         }
         else if (cellInfo.isCleared) {
-            new_class = "cell_clear";
+            if (cellInfo.hasMine) {
+                new_class = "cell_triggered_mine";
+                // $("#" + id).text(":(");            
+            }
+            else {
+                new_class = "cell_clear";
+            }
         }
 
         $("#" + id).removeClass().addClass(new_class);

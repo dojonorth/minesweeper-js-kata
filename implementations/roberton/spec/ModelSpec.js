@@ -3,13 +3,21 @@ TODO: Figure out how to test the events from the model.
 Can then add tests for game status (for example).
 */
 
-describe("Minesweeper", function() {
+describe("Model", function() {
     var minesweeper;
     var minefield;
 
+    locationInfoWithNeighbours = function(numOfNeighbours) {
+        return {
+            isCleared: true,
+            hasFlag: false,
+            neighbours: numOfNeighbours
+        };
+    };
+
     beforeEach(function() {
         minefield = new MinefieldList(5, 5, [{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]);
-        minesweeper = new Minesweeper(minefield);
+        minesweeper = new Model(minefield);
     });
 
     describe("flag behaviour", function() {
@@ -45,16 +53,38 @@ describe("Minesweeper", function() {
         });
     });
 
-    describe("clear behaviour", function() {
-        it("should report if a position has been cleared", function() {
-            expect(minesweeper.location(2, 0).isCleared).toBe(false);
-            expect(minesweeper.location(0, 2).isCleared).toBe(false);
+    describe("when clearing a location", function() {
 
-            minesweeper.clear(2, 0);
-            expect(minesweeper.location(2, 0).isCleared).toBe(true);
+        beforeEach(function() {
+            spyOn(minesweeper, "trigger").and.callThrough();
+        });
 
-            minesweeper.clear(0, 2);
-            expect(minesweeper.location(0, 2).isCleared).toBe(true);
+        it("reports there are no neighbouring mines when the location has no neighbouring mines", function() {
+            minesweeper.clear(4, 0);
+
+            expect(minesweeper.trigger.calls.first().args).toEqual(
+                ["cell_update", 4, 0, [locationInfoWithNeighbours(0)]]);
+        });
+
+        it("reports there is 1 neighbouring mine when the location has 1 neighbouring mine", function() {
+            minesweeper.clear(0, 0);
+
+            expect(minesweeper.trigger.calls.first().args).toEqual(
+                ["cell_update", 0, 0, [locationInfoWithNeighbours(1)]]);
+        });
+
+        it("reports there are 2 neighbouring mine when a location has 2 neighbouring mines", function() {
+            minesweeper.clear(1, 2);
+
+            expect(minesweeper.trigger.calls.first().args).toEqual(
+                ["cell_update", 1, 2, [locationInfoWithNeighbours(2)]]);
+        });
+
+        it("reports there are 3 neighbouring mine when a location has 3 neighbouring mines", function() {
+            minesweeper.clear(2, 2);
+
+            expect(minesweeper.trigger.calls.first().args).toEqual(
+                ["cell_update", 2, 2, [locationInfoWithNeighbours(3)]]);
         });
 
         it("does not allow a location to be cleared if a flag has been set", function() {
@@ -64,32 +94,12 @@ describe("Minesweeper", function() {
             expect(minesweeper.location(1, 0).hasFlag).toBe(true);
             expect(minesweeper.location(1, 0).isCleared).toBe(false);
         });
-
-        it("reports there are no neighbouring mines when a location is cleared which has no neighbouring mines", function() {
-            minesweeper.clear(4, 0);
-            expect(minesweeper.location(4, 0).neighbours).toBe(0);
-        });
-
-        it("reports there is 1 neighbouring mine when a location is cleared which has 1 neighbouring mine", function() {
-            minesweeper.clear(0, 0);
-            expect(minesweeper.location(0, 0).neighbours).toBe(1);
-        });
-
-        it("reports there are 2 neighbouring mine when a location is cleared which has 2 neighbouring mines", function() {
-            minesweeper.clear(1, 2);
-            expect(minesweeper.location(1, 2).neighbours).toBe(2);
-        });
-
-        it("reports there are 3 neighbouring mine when a location is cleared which has 3 neighbouring mines", function() {
-            minesweeper.clear(2, 2);
-            expect(minesweeper.location(2, 2).neighbours).toBe(3);
-        });
     });
 
     describe("game state behaviour", function() {
         beforeEach(function() {
             minefield = new MinefieldList(2, 2, [{"x":1,"y":1}]);
-            minesweeper = new Minesweeper(minefield);
+            minesweeper = new Model(minefield);
         });
 
         it("initially reports game as being ready to play", function() {
@@ -126,5 +136,4 @@ describe("Minesweeper", function() {
             expect(minesweeper.gameStatus()).toBe("WON");
         });
     });
-
 });

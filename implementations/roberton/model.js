@@ -10,12 +10,9 @@
   You can also query the state:
 
   minesweeper.location(x, y);  // returns {hasMine: true/false, hasBeenSeen: true/false}
-
-  NEXT: correct game status for losing and adding a way to query that status. Driven through tests.
-  NEXT: tidy the visibleStatus thing. should be {status:flag/cleared, neighbours: N} with neighbours only set if cleared
 */
 
-function Minesweeper(minefield) {
+function Model(minefield) {
     "use strict";
 
     var self = $.observable(this),
@@ -65,7 +62,8 @@ function Minesweeper(minefield) {
                 hasFlag: (cell === "flag")
             };
         if (cell === "cleared") {
-            visibleCellInfo.neighbours = self._countNeighbouringMines(x, y)
+            visibleCellInfo.hasMine = _minefield.isMineAt(x, y);
+            visibleCellInfo.neighbours = self._countNeighbouringMines(x, y);
         }
         return visibleCellInfo;
     };
