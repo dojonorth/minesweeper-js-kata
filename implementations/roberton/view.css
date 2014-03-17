@@ -30,3 +30,14 @@
     color: green;
     background-color: olive;
 }
+
+.cell_triggered_mine {
+    -webkit-animation: myfirst 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */ {
+    0%   {background: red url("images/sea_mine.png") no-repeat center;}
+    50%  {background: orange url("images/sea_mine.png") no-repeat center;}
+    100% {background: red url("images/sea_mine.png") no-repeat center;}
+}

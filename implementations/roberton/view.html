@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Minesweeper, using riot.js</title>
+        <link rel="stylesheet" href="view.css">
+    </head>
+
+    <body>
+        <h3>Minesweeper, using riot.js</h3>
+        <div id="grid"/>
+
+        <script>
+        /* Little bit of script to build the grid of mines */
+        var createMinefield = function(width, height) {
+            var grid = document.getElementById("grid");
+            for (row = 0; row < height; row++) {
+                for (col = 0; col < width; col++) {
+                    var new_cell = document.createElement("a");
+                    new_cell.id = row + "_" + col;
+                    new_cell.className = "cell_unknown";
+                    grid.appendChild(new_cell);
+                }
+            }
+        }
+        </script>
+
+        <div>
+            <p><span id="game_status">READY</span></p>
+        </div>
+        <script src="lib/jquery-2.1.0.js"></script>
+        <script src="lib/riot.js"></script>
+        <script src="mine.js"></script>
+        <script src="minefield_list.js"></script>
+        <script src="minefield_random.js"></script>
+        <script src="model.js"></script>
+        <script src="presenter.js"></script>
+    </body>
+</html>

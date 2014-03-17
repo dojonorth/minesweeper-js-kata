@@ -1,8 +1,23 @@
-/* The presenter */
+/*
+The presenter.
 
-(function() { 'use strict';
+The presenter is the middle layer between the view and the model.
+It listens for events from both of them, generally passing them on in some way
+the other layer.
 
-    window.minesweeper = new Minesweeper(5, 5, '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3}]');
+Note that since this works with a "passive view", this presenter is responsible for
+updating the UI.
+*/
+
+(function() {
+    "use strict";
+
+    var WIDTH = 5;
+    var HEIGHT = 5;
+    window.minefield = new MinefieldRandom(WIDTH, HEIGHT, Math.floor(WIDTH * HEIGHT / 8));
+    window.minesweeper = new Model(minefield);
+
+    createMinefield(WIDTH, HEIGHT);
 
     var modelStatusToDisplayStatus = {
         "READY": "Ready to play",
@@ -35,7 +50,10 @@
     });
 
     minesweeper.on("cell_update", function(x, y, cellInfo) {
-        update_cell(x, y, cellInfo);
+        console.log(cellInfo);
+        cellInfo.forEach(function(newInfoForCell) {
+            update_cell(x, y, newInfoForCell);
+        });
     });
 
 
@@ -63,7 +81,12 @@
             new_class = "cell_flag";
         }
         else if (cellInfo.isCleared) {
-            new_class = "cell_clear";
+            if (cellInfo.hasMine) {
+                new_class = "cell_triggered_mine";
+            }
+            else {
+                new_class = "cell_clear";
+            }
         }
 
         $("#" + id).removeClass().addClass(new_class);
