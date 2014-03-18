@@ -10,7 +10,7 @@ function MineSweeper(width, height, mineCount) {
     this.createPositions();
 
     // now lay some mines...
-    this.layMines(); 
+    this.layMines();
 
     // and finally, link each position to its direct neighbours
     this.linkAdjacentPositions();
