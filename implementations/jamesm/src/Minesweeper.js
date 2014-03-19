@@ -6,17 +6,20 @@ function Minesweeper(height, width) {
 }
 
 var State = {
-	EMPTY : 1, 
-	MINE : 2
+	EMPTY : "Empty", 
+	MINE : "Mine"
 };
 
 Minesweeper.prototype.initialise = function() {
-	var cells = [this.height][this.width];
+	var cells = new Array(this.height);
+
 	// Cell[this.height, this.width];
 	for (var i = this.height - 1; i >= 0; i--) {
+		var rows = new Array(this.width);
 		for (var j = this.width - 1; j >= 0; j--) {
-			this.cells[i][j] = new Cell(State.EMPTY);
+			rows[j] = new Cell(State.EMPTY);
 		}
+		cells[i] = rows;
 	}
-	return this.cells;
+	return cells;
 };

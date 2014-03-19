@@ -17,7 +17,7 @@ describe("Minesweeper Kata", function() {
 	   	it("all cells in new game initialised to empty", function() {
 	   		for(var i = 0; i < game.height; i++) {
 	   			for(var j = 0; j < game.width; j++) {
-	   				expect(game.cells[i][j].state).toEqual(State.MINE);
+	   				expect(game.cells[i][j].state).toEqual(State.EMPTY);
 				}
 	   		}
 	   	});
