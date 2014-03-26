@@ -90,7 +90,7 @@ function GameUI(board, width, height, flags) {
                     cell.appendTo(row);
                 }
             }
-            this.redrawGameBoard();
+            game_ui.redrawGameBoard();
         }
     }
     game_ui.initGameBoard();
