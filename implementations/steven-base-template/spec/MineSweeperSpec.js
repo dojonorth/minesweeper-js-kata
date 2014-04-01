@@ -1,6 +1,9 @@
 describe('Minesweeper Kata', function () {
 
-	describe('when my first test', function () {
-		pending("Please implement this test");
-	});
+    it('should know is true', function () {
+
+        var result= true;
+
+        expect(result).toBe(true);
+    });
 });
