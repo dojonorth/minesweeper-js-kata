@@ -1,17 +1,9 @@
-minesweeper-js-kata
-===================
-
 Implementations and files related to the first BBC North Dojo event: Minesweeper
 
 
-Background
-==========
-
+Rules of the Game
+=================
 The objective of the game is to clear a minefield without exploding any of the mines.
-
-
-Rules
-=====
 
 The minefield
 -------------
