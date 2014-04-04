@@ -1,0 +1,45 @@
+html, body, .container {
+    height: 100%;
+}
+
+form#game-settings {
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    margin: 15px 0 0 0;
+    padding: 15px;
+}
+
+form#game-settings input {
+    margin-right: 10px;
+}
+
+div#game-board {
+    padding: 15px;
+    background-color: #ccc;
+    border-radius: 0 0 4px 4px;
+}
+
+div#game-board .cell-row {
+    clear: left;
+}
+
+div#game-board .cell {
+    float: left;
+    color: #fff;
+    text-align: center;
+}
+
+div#game-board .cell > .inner {
+    border: 1px solid #fff;
+    height: 100%;
+    width: 100%;
+}
+
+div#game-board .cell > .inner.uncovered {
+    background-color: #aaa;
+}
+
+div#game-board .cell > .inner.uncovered.flaticon-mine {
+    background-color: #a00;
+}
