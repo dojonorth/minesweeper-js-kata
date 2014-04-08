@@ -4,20 +4,32 @@ function Board(height, width) {
 	this.cells = [];
 
 	for (var x = 0; x < height; x++) {
-		this.cells[x] = []; 
+		this.cells[x] = [];
 		for (var y = 0; y < width; y++) {
-			this.cells[x][y] = new Cell();
+			this.cells[x][y] = new Cell(x, y);
 		}
 	}
 
-	// console.log(this.cells);
+	for (var x = 0; x < height; x++) {
+		for (var y = 0; y < width; y++) {
+			cell = this.getCellAt(x, y);
+			if (y < width - 1) {
+				cell.addNeighbour(this.getCellAt(x, y + 1));
+			}
+			if (x < height - 1) {
+				cell.addNeighbour(this.getCellAt(x + 1, y));
+			}
+			if (x < height - 1 && y < width - 1) {
+				cell.addNeighbour(this.getCellAt(x + 1, y + 1));
+			}
+			if (x > 0 && y > width - 1) {
+				cell.addNeighbour(this.getCellAt(x + 1, y - 1));
+			}
+		}
+	}
 }
 
 Board.prototype = {
-	initialise: function(height, width) {
-		return this.cells;
-	},
-
 	getHeight: function() {
 		return this.height;
 	},
